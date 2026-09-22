@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 /**
  * PickBookFile opens a native OS file dialog to select a single novel or ebook file.
@@ -20,8 +20,10 @@ export function PickBookFile(): $CancellablePromise<string> {
 /**
  * PickBookFiles opens a native OS file dialog to select multiple novel or ebook files.
  */
-export function PickBookFiles(): $CancellablePromise<string[] | null> {
-    return $Call.ByID(393196498);
+export function PickBookFiles(): $CancellablePromise<string[]> {
+    return $Call.ByID(393196498).then(($result: any) => {
+        return $$createType0($result);
+    });
 }
 
 /**
@@ -34,6 +36,11 @@ export function PickFolder(): $CancellablePromise<string> {
 /**
  * ScanFolderForBooks finds all supported ebook and novel files in a given directory.
  */
-export function ScanFolderForBooks(dirPath: string): $CancellablePromise<string[] | null> {
-    return $Call.ByID(3380682557, dirPath);
+export function ScanFolderForBooks(dirPath: string): $CancellablePromise<string[]> {
+    return $Call.ByID(3380682557, dirPath).then(($result: any) => {
+        return $$createType0($result);
+    });
 }
+
+// Private type creation functions
+const $$createType0 = $Create.Array($Create.Any);

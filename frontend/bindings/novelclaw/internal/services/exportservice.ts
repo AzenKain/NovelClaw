@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -18,19 +18,31 @@ import * as dtos$0 from "../dtos/models.js";
  * ExportEbook synthesizes an ebook file in the requested format.
  */
 export function ExportEbook(req: dtos$0.ExportEbookRequest): $CancellablePromise<dtos$0.ExportResultDTO | null> {
-    return $Call.ByID(3919235378, req);
+    return $Call.ByID(3919235378, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ExportProjectBundle packages all project database records and assets into a portable .neko file.
  */
 export function ExportProjectBundle(req: dtos$0.ExportBundleRequest): $CancellablePromise<dtos$0.ExportResultDTO | null> {
-    return $Call.ByID(2931067053, req);
+    return $Call.ByID(2931067053, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ListSupportedFormats returns all available ebook export formats with metadata.
  */
-export function ListSupportedFormats(): $CancellablePromise<dtos$0.FormatDescriptorDTO[] | null> {
-    return $Call.ByID(334680068);
+export function ListSupportedFormats(): $CancellablePromise<dtos$0.FormatDescriptorDTO[]> {
+    return $Call.ByID(334680068).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.ExportResultDTO.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = dtos$0.FormatDescriptorDTO.createFrom;
+const $$createType3 = $Create.Array($$createType2);

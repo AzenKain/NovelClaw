@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -18,14 +18,18 @@ import * as dtos$0 from "../dtos/models.js";
  * AutoScanEntities uses LLM to discover characters, roles, facts, and address terms from volume or chapter content.
  */
 export function AutoScanEntities(req: dtos$0.AutoScanRequest): $CancellablePromise<dtos$0.AutoScanResultDTO | null> {
-    return $Call.ByID(3978113035, req);
+    return $Call.ByID(3978113035, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * BuildSelectiveContext scans text and returns only relevant characters, address terms and glossary as a DTO.
  */
 export function BuildSelectiveContext(projectID: string, chapterIndex: number, chunkText: string): $CancellablePromise<dtos$0.SelectiveContextDTO | null> {
-    return $Call.ByID(3413489827, projectID, chapterIndex, chunkText);
+    return $Call.ByID(3413489827, projectID, chapterIndex, chunkText).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
@@ -33,7 +37,9 @@ export function BuildSelectiveContext(projectID: string, chapterIndex: number, c
  * for the given chapter and its corresponding volume before translation.
  */
 export function CheckGraphReadiness(projectID: string, chapterIndex: number): $CancellablePromise<dtos$0.GraphReadinessDTO | null> {
-    return $Call.ByID(2490299958, projectID, chapterIndex);
+    return $Call.ByID(2490299958, projectID, chapterIndex).then(($result: any) => {
+        return $$createType5($result);
+    });
 }
 
 /**
@@ -53,30 +59,38 @@ export function DeleteRelation(id: string): $CancellablePromise<void> {
 /**
  * ListActiveEntitiesAtChapter lists entities introduced at or before the given chapter as DTOs.
  */
-export function ListActiveEntitiesAtChapter(projectID: string, chapterIndex: number): $CancellablePromise<dtos$0.EntityDTO[] | null> {
-    return $Call.ByID(3642685639, projectID, chapterIndex);
+export function ListActiveEntitiesAtChapter(projectID: string, chapterIndex: number): $CancellablePromise<dtos$0.EntityDTO[]> {
+    return $Call.ByID(3642685639, projectID, chapterIndex).then(($result: any) => {
+        return $$createType7($result);
+    });
 }
 
 /**
  * ListEffectiveRelationsAtChapter returns character relationships effective at chapterIndex.
  * If chapterIndex <= 0, returns all relations across the project.
  */
-export function ListEffectiveRelationsAtChapter(projectID: string, chapterIndex: number): $CancellablePromise<dtos$0.RelationDTO[] | null> {
-    return $Call.ByID(3136894110, projectID, chapterIndex);
+export function ListEffectiveRelationsAtChapter(projectID: string, chapterIndex: number): $CancellablePromise<dtos$0.RelationDTO[]> {
+    return $Call.ByID(3136894110, projectID, chapterIndex).then(($result: any) => {
+        return $$createType9($result);
+    });
 }
 
 /**
  * ListEntities lists all entities for a project as DTOs.
  */
-export function ListEntities(projectID: string): $CancellablePromise<dtos$0.EntityDTO[] | null> {
-    return $Call.ByID(1639801409, projectID);
+export function ListEntities(projectID: string): $CancellablePromise<dtos$0.EntityDTO[]> {
+    return $Call.ByID(1639801409, projectID).then(($result: any) => {
+        return $$createType7($result);
+    });
 }
 
 /**
  * ListRelations lists all character relationships for a project as DTOs.
  */
-export function ListRelations(projectID: string): $CancellablePromise<dtos$0.RelationDTO[] | null> {
-    return $Call.ByID(2798358991, projectID);
+export function ListRelations(projectID: string): $CancellablePromise<dtos$0.RelationDTO[]> {
+    return $Call.ByID(2798358991, projectID).then(($result: any) => {
+        return $$createType9($result);
+    });
 }
 
 /**
@@ -99,3 +113,15 @@ export function UpsertEntity(req: dtos$0.UpsertEntityRequest): $CancellablePromi
 export function UpsertRelation(req: dtos$0.UpsertRelationRequest): $CancellablePromise<void> {
     return $Call.ByID(4221249329, req);
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.AutoScanResultDTO.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = dtos$0.SelectiveContextDTO.createFrom;
+const $$createType3 = $Create.Nullable($$createType2);
+const $$createType4 = dtos$0.GraphReadinessDTO.createFrom;
+const $$createType5 = $Create.Nullable($$createType4);
+const $$createType6 = dtos$0.EntityDTO.createFrom;
+const $$createType7 = $Create.Array($$createType6);
+const $$createType8 = dtos$0.RelationDTO.createFrom;
+const $$createType9 = $Create.Array($$createType8);

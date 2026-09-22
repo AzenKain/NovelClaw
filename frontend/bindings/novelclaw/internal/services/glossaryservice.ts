@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -66,15 +66,19 @@ export function ImportTSV(projectID: string, tsvContent: string): $CancellablePr
 /**
  * ListRemoteSources returns all community online dictionary sources (e.g. GitHub repos) for frontend display.
  */
-export function ListRemoteSources(): $CancellablePromise<dtos$0.RemoteGlossarySourceDTO[] | null> {
-    return $Call.ByID(241397084);
+export function ListRemoteSources(): $CancellablePromise<dtos$0.RemoteGlossarySourceDTO[]> {
+    return $Call.ByID(241397084).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ListTerms lists all terms in a project's glossary as DTOs.
  */
-export function ListTerms(projectID: string): $CancellablePromise<dtos$0.GlossaryTermDTO[] | null> {
-    return $Call.ByID(1744182639, projectID);
+export function ListTerms(projectID: string): $CancellablePromise<dtos$0.GlossaryTermDTO[]> {
+    return $Call.ByID(1744182639, projectID).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
@@ -83,3 +87,9 @@ export function ListTerms(projectID: string): $CancellablePromise<dtos$0.Glossar
 export function UpsertTerm(req: dtos$0.UpsertGlossaryTermRequest): $CancellablePromise<void> {
     return $Call.ByID(4078345245, req);
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.RemoteGlossarySourceDTO.createFrom;
+const $$createType1 = $Create.Array($$createType0);
+const $$createType2 = dtos$0.GlossaryTermDTO.createFrom;
+const $$createType3 = $Create.Array($$createType2);

@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -21,7 +21,9 @@ import * as soul$0 from "../../pkg/soul/models.js";
  * Controller exposes the underlying soul controller for engine-level coordination.
  */
 export function Controller(): $CancellablePromise<soul$0.Controller | null> {
-    return $Call.ByID(3393150599);
+    return $Call.ByID(3393150599).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
@@ -42,28 +44,36 @@ export function ExportSoulMarkdown(soulID: string): $CancellablePromise<string> 
  * GetActiveSoul returns the active soul for a project or the global active soul.
  */
 export function GetActiveSoul(projectID: string): $CancellablePromise<dtos$0.SoulDTO> {
-    return $Call.ByID(411264592, projectID);
+    return $Call.ByID(411264592, projectID).then(($result: any) => {
+        return $$createType2($result);
+    });
 }
 
 /**
  * GetSoul returns the active Soul companion metadata and current mood.
  */
 export function GetSoul(): $CancellablePromise<dtos$0.SoulDTO> {
-    return $Call.ByID(3056050782);
+    return $Call.ByID(3056050782).then(($result: any) => {
+        return $$createType2($result);
+    });
 }
 
 /**
  * ImportSoulMarkdown imports and validates a soul profile from *.soul.md text.
  */
 export function ImportSoulMarkdown(content: string): $CancellablePromise<dtos$0.SoulDTO> {
-    return $Call.ByID(892853460, content);
+    return $Call.ByID(892853460, content).then(($result: any) => {
+        return $$createType2($result);
+    });
 }
 
 /**
  * ListAvailableSouls returns all registered soul profiles.
  */
-export function ListAvailableSouls(): $CancellablePromise<dtos$0.SoulDTO[] | null> {
-    return $Call.ByID(3770236386);
+export function ListAvailableSouls(): $CancellablePromise<dtos$0.SoulDTO[]> {
+    return $Call.ByID(3770236386).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
@@ -91,5 +101,14 @@ export function SetActiveSoul(projectID: string, soulID: string): $CancellablePr
  * TriggerSteerAction directly issues emergency stops or hot style patches without chatting.
  */
 export function TriggerSteerAction(req: dtos$0.SteerActionRequest): $CancellablePromise<dtos$0.SteerActionResultDTO> {
-    return $Call.ByID(2182356876, req);
+    return $Call.ByID(2182356876, req).then(($result: any) => {
+        return $$createType4($result);
+    });
 }
+
+// Private type creation functions
+const $$createType0 = soul$0.Controller.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = dtos$0.SoulDTO.createFrom;
+const $$createType3 = $Create.Array($$createType2);
+const $$createType4 = dtos$0.SteerActionResultDTO.createFrom;

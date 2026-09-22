@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -30,7 +30,9 @@ import * as worldbible$0 from "../../pkg/worldbible/models.js";
  * AutoScoutStyle analyzes opening narrative chapters of a novel and generates a tailored style guide.
  */
 export function AutoScoutStyle(req: dtos$0.AutoScoutStyleRequest): $CancellablePromise<dtos$0.AutoScoutStyleResponse | null> {
-    return $Call.ByID(2283356949, req);
+    return $Call.ByID(2283356949, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
@@ -44,7 +46,9 @@ export function CancelTranslation(jobID: string): $CancellablePromise<boolean> {
  * PreviewStyle translates a raw excerpt with the specified style instructions using the configured LLM.
  */
 export function PreviewStyle(req: dtos$0.PreviewStyleRequest): $CancellablePromise<dtos$0.PreviewStyleResponse | null> {
-    return $Call.ByID(2710099200, req);
+    return $Call.ByID(2710099200, req).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
@@ -58,7 +62,9 @@ export function ResolveAskHuman(jobID: string, answer: string): $CancellableProm
  * RunBenchmark executes a comparative benchmark across selected modes and returns a report.
  */
 export function RunBenchmark(req: dtos$0.StartBenchmarkRequest): $CancellablePromise<dtos$0.BenchmarkReportDTO | null> {
-    return $Call.ByID(3030309481, req);
+    return $Call.ByID(3030309481, req).then(($result: any) => {
+        return $$createType5($result);
+    });
 }
 
 /**
@@ -100,5 +106,17 @@ export function SoftStopTranslation(jobID: string): $CancellablePromise<boolean>
  * TranslateChapter coordinates chapter translation using the selected mode and options.
  */
 export function TranslateChapter(req: dtos$0.StartTranslationRequest): $CancellablePromise<dtos$0.ExecutionTelemetryDTO | null> {
-    return $Call.ByID(2209991034, req);
+    return $Call.ByID(2209991034, req).then(($result: any) => {
+        return $$createType7($result);
+    });
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.AutoScoutStyleResponse.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = dtos$0.PreviewStyleResponse.createFrom;
+const $$createType3 = $Create.Nullable($$createType2);
+const $$createType4 = dtos$0.BenchmarkReportDTO.createFrom;
+const $$createType5 = $Create.Nullable($$createType4);
+const $$createType6 = dtos$0.ExecutionTelemetryDTO.createFrom;
+const $$createType7 = $Create.Nullable($$createType6);

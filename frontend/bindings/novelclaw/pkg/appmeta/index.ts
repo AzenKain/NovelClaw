@@ -6,6 +6,6 @@ export {
     UpdateService
 };
 
-export type {
+export {
     AppInfo
 } from "./models.js";

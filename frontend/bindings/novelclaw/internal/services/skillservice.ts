@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -34,22 +34,28 @@ export function GetActiveSkillsTokenWeight(projectID: string): $CancellablePromi
 /**
  * GetSkillPresets returns all available capability presets.
  */
-export function GetSkillPresets(): $CancellablePromise<dtos$0.SkillPresetDTO[] | null> {
-    return $Call.ByID(601880558);
+export function GetSkillPresets(): $CancellablePromise<dtos$0.SkillPresetDTO[]> {
+    return $Call.ByID(601880558).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ListSkills returns all available modular skills and their current state for a project.
  */
-export function ListSkills(projectID: string): $CancellablePromise<dtos$0.SkillDTO[] | null> {
-    return $Call.ByID(1552142845, projectID);
+export function ListSkills(projectID: string): $CancellablePromise<dtos$0.SkillDTO[]> {
+    return $Call.ByID(1552142845, projectID).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
  * Registry returns the underlying Skill Registry.
  */
 export function Registry(): $CancellablePromise<skills$0.Registry | null> {
-    return $Call.ByID(195384488);
+    return $Call.ByID(195384488).then(($result: any) => {
+        return $$createType5($result);
+    });
 }
 
 /**
@@ -72,3 +78,11 @@ export function ToggleSkill(projectID: string, skillID: string, enabled: boolean
 export function UpdateSkillCustomRules(projectID: string, skillID: string, customRules: string): $CancellablePromise<void> {
     return $Call.ByID(1631319035, projectID, skillID, customRules);
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.SkillPresetDTO.createFrom;
+const $$createType1 = $Create.Array($$createType0);
+const $$createType2 = dtos$0.SkillDTO.createFrom;
+const $$createType3 = $Create.Array($$createType2);
+const $$createType4 = skills$0.Registry.createFrom;
+const $$createType5 = $Create.Nullable($$createType4);

@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -25,14 +25,18 @@ export function ClearThread(threadID: string): $CancellablePromise<void> {
  * CompactThread forces an immediate compression of older messages in the thread.
  */
 export function CompactThread(threadID: string): $CancellablePromise<dtos$0.CompactThreadResponse | null> {
-    return $Call.ByID(4038821936, threadID);
+    return $Call.ByID(4038821936, threadID).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * CreateSubThread creates a specialized sub-chat thread for a project, volume, or chapter.
  */
 export function CreateSubThread(req: dtos$0.CreateSubThreadRequest): $CancellablePromise<dtos$0.NovelClawThreadDTO | null> {
-    return $Call.ByID(3092672811, req);
+    return $Call.ByID(3092672811, req).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
@@ -53,28 +57,36 @@ export function GetAutoCompactThreshold(): $CancellablePromise<number> {
  * GetOrCreateMainThread ensures a main thread exists for the project and returns it.
  */
 export function GetOrCreateMainThread(projectID: string): $CancellablePromise<dtos$0.NovelClawThreadDTO | null> {
-    return $Call.ByID(2408051293, projectID);
+    return $Call.ByID(2408051293, projectID).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
  * ListMessages returns non-archived messages in chronological order for a thread.
  */
-export function ListMessages(threadID: string): $CancellablePromise<dtos$0.NovelClawMessageDTO[] | null> {
-    return $Call.ByID(3487399655, threadID);
+export function ListMessages(threadID: string): $CancellablePromise<dtos$0.NovelClawMessageDTO[]> {
+    return $Call.ByID(3487399655, threadID).then(($result: any) => {
+        return $$createType5($result);
+    });
 }
 
 /**
  * ListThreads returns all chat threads for a project with token counts.
  */
-export function ListThreads(projectID: string): $CancellablePromise<dtos$0.NovelClawThreadDTO[] | null> {
-    return $Call.ByID(3694401732, projectID);
+export function ListThreads(projectID: string): $CancellablePromise<dtos$0.NovelClawThreadDTO[]> {
+    return $Call.ByID(3694401732, projectID).then(($result: any) => {
+        return $$createType6($result);
+    });
 }
 
 /**
  * SendMessage sends a user message to NovelClaw and executes tools / returns reply.
  */
 export function SendMessage(req: dtos$0.SendNovelClawMessageRequest): $CancellablePromise<dtos$0.NovelClawMessageDTO | null> {
-    return $Call.ByID(3404420424, req);
+    return $Call.ByID(3404420424, req).then(($result: any) => {
+        return $$createType7($result);
+    });
 }
 
 /**
@@ -90,3 +102,13 @@ export function SetAutoCompactThreshold(tokens: number): $CancellablePromise<voi
 export function UpdateThreadTitle(threadID: string, title: string): $CancellablePromise<void> {
     return $Call.ByID(3296355540, threadID, title);
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.CompactThreadResponse.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = dtos$0.NovelClawThreadDTO.createFrom;
+const $$createType3 = $Create.Nullable($$createType2);
+const $$createType4 = dtos$0.NovelClawMessageDTO.createFrom;
+const $$createType5 = $Create.Array($$createType4);
+const $$createType6 = $Create.Array($$createType2);
+const $$createType7 = $Create.Nullable($$createType4);

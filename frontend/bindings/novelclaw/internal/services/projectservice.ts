@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -18,7 +18,9 @@ import * as dtos$0 from "../dtos/models.js";
  * AppendBookToProject parses an additional book/volume and appends its chapters to an existing project/series.
  */
 export function AppendBookToProject(req: dtos$0.AppendBookRequest): $CancellablePromise<dtos$0.ProjectDTO | null> {
-    return $Call.ByID(1516246532, req);
+    return $Call.ByID(1516246532, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
@@ -39,63 +41,81 @@ export function DeleteProject(id: string): $CancellablePromise<void> {
  * GetChapter retrieves a specific chapter by its unique ID.
  */
 export function GetChapter(chapterID: string): $CancellablePromise<dtos$0.ChapterDTO | null> {
-    return $Call.ByID(3324435982, chapterID);
+    return $Call.ByID(3324435982, chapterID).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
  * GetProject retrieves project details by ID as a DTO.
  */
 export function GetProject(id: string): $CancellablePromise<dtos$0.ProjectDTO | null> {
-    return $Call.ByID(3059341362, id);
+    return $Call.ByID(3059341362, id).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ImportBook parses a novel file (EPUB, TXT, FB2) and ingests it into a new project.
  */
 export function ImportBook(req: dtos$0.ImportBookRequest): $CancellablePromise<dtos$0.ProjectDTO | null> {
-    return $Call.ByID(1316299139, req);
+    return $Call.ByID(1316299139, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ImportBooksBatch imports multiple files, either as separate projects or aggregated as a multi-volume series.
  */
 export function ImportBooksBatch(req: dtos$0.BatchImportBookRequest): $CancellablePromise<dtos$0.BatchImportResultDTO | null> {
-    return $Call.ByID(2839681992, req);
+    return $Call.ByID(2839681992, req).then(($result: any) => {
+        return $$createType5($result);
+    });
 }
 
 /**
  * InheritKnowledge copies character graph (L2) and glossary (L3) from a source project to a target project.
  */
 export function InheritKnowledge(req: dtos$0.InheritKnowledgeRequest): $CancellablePromise<dtos$0.InheritKnowledgeResultDTO | null> {
-    return $Call.ByID(4060499290, req);
+    return $Call.ByID(4060499290, req).then(($result: any) => {
+        return $$createType7($result);
+    });
 }
 
 /**
  * ListChapters retrieves all chapters belonging to a project ordered by chapter index.
  */
-export function ListChapters(projectID: string): $CancellablePromise<dtos$0.ChapterDTO[] | null> {
-    return $Call.ByID(3433591241, projectID);
+export function ListChapters(projectID: string): $CancellablePromise<dtos$0.ChapterDTO[]> {
+    return $Call.ByID(3433591241, projectID).then(($result: any) => {
+        return $$createType8($result);
+    });
 }
 
 /**
  * ListProjects lists all available projects as DTOs.
  */
-export function ListProjects(): $CancellablePromise<dtos$0.ProjectDTO[] | null> {
-    return $Call.ByID(4267051653);
+export function ListProjects(): $CancellablePromise<dtos$0.ProjectDTO[]> {
+    return $Call.ByID(4267051653).then(($result: any) => {
+        return $$createType9($result);
+    });
 }
 
 /**
  * RenameProject updates the title of a project and returns the updated ProjectDTO.
  */
 export function RenameProject(req: dtos$0.RenameProjectRequest): $CancellablePromise<dtos$0.ProjectDTO | null> {
-    return $Call.ByID(2622689998, req);
+    return $Call.ByID(2622689998, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * RollbackChapter restores the chapter translation and status to the latest saved checkpoint.
  */
 export function RollbackChapter(projectID: string, chapterIndex: number): $CancellablePromise<dtos$0.ChapterDTO | null> {
-    return $Call.ByID(641109836, projectID, chapterIndex);
+    return $Call.ByID(641109836, projectID, chapterIndex).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
@@ -109,12 +129,28 @@ export function UpdateChapterTranslation(req: dtos$0.UpdateChapterInlineRequest)
  * UpdateProjectLanguages updates translation language direction for a project and returns the updated ProjectDTO.
  */
 export function UpdateProjectLanguages(req: dtos$0.UpdateProjectLanguagesRequest): $CancellablePromise<dtos$0.ProjectDTO | null> {
-    return $Call.ByID(323078598, req);
+    return $Call.ByID(323078598, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * UpdateProjectStyle updates the style name and style guide prompt for a project and returns the updated ProjectDTO.
  */
 export function UpdateProjectStyle(req: dtos$0.UpdateProjectStyleRequest): $CancellablePromise<dtos$0.ProjectDTO | null> {
-    return $Call.ByID(1264848368, req);
+    return $Call.ByID(1264848368, req).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.ProjectDTO.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = dtos$0.ChapterDTO.createFrom;
+const $$createType3 = $Create.Nullable($$createType2);
+const $$createType4 = dtos$0.BatchImportResultDTO.createFrom;
+const $$createType5 = $Create.Nullable($$createType4);
+const $$createType6 = dtos$0.InheritKnowledgeResultDTO.createFrom;
+const $$createType7 = $Create.Nullable($$createType6);
+const $$createType8 = $Create.Array($$createType2);
+const $$createType9 = $Create.Array($$createType0);

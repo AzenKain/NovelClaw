@@ -9,7 +9,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -57,28 +57,36 @@ export function ImportWorldBibleJSON(projectID: string, jsonStr: string): $Cance
  * LearnFromEdits analyzes edits made to a chapter and persists evolved rules via the Distiller.
  */
 export function LearnFromEdits(projectID: string, chapterIndex: number, notes: string): $CancellablePromise<dtos$0.LearnResultDTO | null> {
-    return $Call.ByID(3155196729, projectID, chapterIndex, notes);
+    return $Call.ByID(3155196729, projectID, chapterIndex, notes).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ListCategories returns all categories defined for a project.
  */
-export function ListCategories(projectID: string): $CancellablePromise<dtos$0.WorldCategoryDTO[] | null> {
-    return $Call.ByID(1758920838, projectID);
+export function ListCategories(projectID: string): $CancellablePromise<dtos$0.WorldCategoryDTO[]> {
+    return $Call.ByID(1758920838, projectID).then(($result: any) => {
+        return $$createType3($result);
+    });
 }
 
 /**
  * ListCharacterVoices returns registered voice profiles for a project.
  */
-export function ListCharacterVoices(projectID: string): $CancellablePromise<dtos$0.CharacterVoiceDTO[] | null> {
-    return $Call.ByID(3948420418, projectID);
+export function ListCharacterVoices(projectID: string): $CancellablePromise<dtos$0.CharacterVoiceDTO[]> {
+    return $Call.ByID(3948420418, projectID).then(($result: any) => {
+        return $$createType5($result);
+    });
 }
 
 /**
  * ListEntries returns world entries for a project, optionally filtered by category.
  */
-export function ListEntries(projectID: string, categoryID: string): $CancellablePromise<dtos$0.WorldEntryDTO[] | null> {
-    return $Call.ByID(2233430182, projectID, categoryID);
+export function ListEntries(projectID: string, categoryID: string): $CancellablePromise<dtos$0.WorldEntryDTO[]> {
+    return $Call.ByID(2233430182, projectID, categoryID).then(($result: any) => {
+        return $$createType7($result);
+    });
 }
 
 /**
@@ -92,7 +100,9 @@ export function ResetSkillsToDefault(projectID: string): $CancellablePromise<voi
  * ScanAndBuildWorld triggers the autonomous builder agent to scan novel chapters and synthesize the World Bible.
  */
 export function ScanAndBuildWorld(projectID: string, startChap: number, endChap: number): $CancellablePromise<dtos$0.ScanWorldResponse | null> {
-    return $Call.ByID(1011788844, projectID, startChap, endChap);
+    return $Call.ByID(1011788844, projectID, startChap, endChap).then(($result: any) => {
+        return $$createType9($result);
+    });
 }
 
 /**
@@ -113,7 +123,9 @@ export function SyncVoicesFromGraph(projectID: string): $CancellablePromise<numb
  * UpsertCategory adds or modifies a dynamic world taxonomy category.
  */
 export function UpsertCategory(req: dtos$0.UpsertWorldCategoryRequest): $CancellablePromise<dtos$0.WorldCategoryDTO | null> {
-    return $Call.ByID(3517639673, req);
+    return $Call.ByID(3517639673, req).then(($result: any) => {
+        return $$createType10($result);
+    });
 }
 
 /**
@@ -127,7 +139,9 @@ export function UpsertCharacterVoice(req: dtos$0.UpsertVoiceRequest): $Cancellab
  * UpsertEntry adds or modifies a Lorebook entry.
  */
 export function UpsertEntry(req: dtos$0.UpsertWorldEntryRequest): $CancellablePromise<dtos$0.WorldEntryDTO | null> {
-    return $Call.ByID(3981748491, req);
+    return $Call.ByID(3981748491, req).then(($result: any) => {
+        return $$createType11($result);
+    });
 }
 
 /**
@@ -136,3 +150,17 @@ export function UpsertEntry(req: dtos$0.UpsertWorldEntryRequest): $CancellablePr
 export function VerifyEntry(id: string, verified: boolean): $CancellablePromise<void> {
     return $Call.ByID(1631357437, id, verified);
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.LearnResultDTO.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = dtos$0.WorldCategoryDTO.createFrom;
+const $$createType3 = $Create.Array($$createType2);
+const $$createType4 = dtos$0.CharacterVoiceDTO.createFrom;
+const $$createType5 = $Create.Array($$createType4);
+const $$createType6 = dtos$0.WorldEntryDTO.createFrom;
+const $$createType7 = $Create.Array($$createType6);
+const $$createType8 = dtos$0.ScanWorldResponse.createFrom;
+const $$createType9 = $Create.Nullable($$createType8);
+const $$createType10 = $Create.Nullable($$createType2);
+const $$createType11 = $Create.Nullable($$createType6);

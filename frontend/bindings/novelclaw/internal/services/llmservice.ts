@@ -8,7 +8,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -25,14 +25,18 @@ export function DeleteConfig(id: string): $CancellablePromise<void> {
  * GetDefaultConfig returns the active default LLM provider configuration with masked token as a DTO.
  */
 export function GetDefaultConfig(): $CancellablePromise<dtos$0.LLMConfigDTO | null> {
-    return $Call.ByID(1541586174);
+    return $Call.ByID(1541586174).then(($result: any) => {
+        return $$createType1($result);
+    });
 }
 
 /**
  * ListConfigs lists all active LLM configurations with masked tokens as DTOs.
  */
-export function ListConfigs(): $CancellablePromise<dtos$0.LLMConfigDTO[] | null> {
-    return $Call.ByID(4069433792);
+export function ListConfigs(): $CancellablePromise<dtos$0.LLMConfigDTO[]> {
+    return $Call.ByID(4069433792).then(($result: any) => {
+        return $$createType2($result);
+    });
 }
 
 /**
@@ -53,5 +57,14 @@ export function SetDefaultConfig(id: string): $CancellablePromise<void> {
  * TestConnection sends a lightweight probe to verify connectivity and API key validity with the provider.
  */
 export function TestConnection(req: dtos$0.TestConnectionRequest): $CancellablePromise<dtos$0.TestConnectionResponse | null> {
-    return $Call.ByID(3826890153, req);
+    return $Call.ByID(3826890153, req).then(($result: any) => {
+        return $$createType4($result);
+    });
 }
+
+// Private type creation functions
+const $$createType0 = dtos$0.LLMConfigDTO.createFrom;
+const $$createType1 = $Create.Nullable($$createType0);
+const $$createType2 = $Create.Array($$createType0);
+const $$createType3 = dtos$0.TestConnectionResponse.createFrom;
+const $$createType4 = $Create.Nullable($$createType3);
