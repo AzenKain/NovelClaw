@@ -17,7 +17,6 @@ env:
 jobs:
   build:
     name: Build ${{ matrix.build.platform }}
-    environment: cicd
     strategy:
       fail-fast: false
       matrix:
@@ -63,11 +62,6 @@ jobs:
           npm install
           cd ..
 
-      # The version has ONE source of truth: the `Version` constant in
-      # pkg/appmeta/version.go (no -ldflags injection). Mirror it into
-      # build/config.yml so the bundle metadata baked into Info.plist / MSIX
-      # matches the version the self-updater compares against, and fail the
-      # build if the pushed tag disagrees with the code.
       - name: Sync version from pkg/appmeta/version.go
         shell: bash
         run: |
