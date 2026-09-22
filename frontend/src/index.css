@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html, body {
+    @apply bg-[#0b0e14] text-slate-100 antialiased selection:bg-indigo-500/30 selection:text-indigo-200;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Helvetica Neue", Arial, sans-serif;
+    user-select: none;
+    overflow: hidden;
+    color-scheme: dark;
+  }
+
+  /* Universal Dark Form Controls Reset (Prevents Linux/WebKit native white inputs & comboboxes) */
+  input, select, textarea {
+    color-scheme: dark;
+    background-color: #111726;
+    color: #f1f5f9;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Remove default browser button styling on inputs */
+  input[type="text"],
+  input[type="password"],
+  input[type="url"],
+  input[type="number"],
+  input[type="email"],
+  textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: #111726;
+    color: #f1f5f9;
+  }
+
+  select option {
+    background-color: #111726;
+    color: #f1f5f9;
+    padding: 8px 12px;
+  }
+
+  select:focus, input:focus, textarea:focus {
+    outline: none;
+  }
+
+  input[type="checkbox"] {
+    accent-color: #6366f1;
+    cursor: pointer;
+  }
+}
+
+/* Custom Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Surface Utilities - Developer-grade Dark Luxury */
+.surface-card {
+  background: #111622;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.surface-glass {
+  background: rgba(15, 20, 31, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Light Novel Reader Typography & Layout */
+.reader-content {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Georgia, serif;
+  line-height: 1.85;
+  color: #e2e8f0;
+}
+
+.reader-content p {
+  margin-bottom: 1.15rem;
+  line-height: 1.85;
+}
+
+.reader-content :is(h1, h2, h3, h4, h5, h6, .chapter-title, .title-top, .title_top, p.title) {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  margin-inline: auto;
+  color: #c7d2fe;
+}
+
+.reader-content h1,
+.reader-content .chapter-title,
+.reader-content .title-top {
+  font-size: 1.45rem;
+  line-height: 1.35;
+  margin-top: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.reader-content h2 {
+  font-size: 1.25rem;
+  line-height: 1.35;
+  margin-top: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.reader-content h3 {
+  font-size: 1.15rem;
+  line-height: 1.4;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.reader-content blockquote {
+  margin: 1.25rem 0;
+  padding: 0.25rem 0 0.25rem 1rem;
+  border-left: 3px solid #6366f1;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.reader-content hr {
+  width: 60%;
+  height: 1px;
+  margin: 2rem auto;
+  border: 0;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.reader-content img {
+  max-width: 90%;
+  height: auto;
+  margin: 1.25rem auto;
+  display: block;
+  border-radius: 0.5rem;
+}
+
+.reader-content [hidden],
+.reader-content [style*="display: none"],
+.reader-content [style*="display:none"],
+.reader-content [style*="visibility: hidden"],
+.reader-content [style*="visibility:hidden"],
+.reader-content .d-none,
+.reader-content .hidden,
+.reader-content .invisible {
+  display: none !important;
+}
+
+
+
+/* Utility: hide the scrollbar while keeping the element scrollable.
+   Used by the header tab strip, which scrolls horizontally instead of
+   wrapping or pushing the right-hand cluster off screen. */
+@layer utilities {
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE / legacy Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none; /* WebKit / WebView2 */
+  }
+}

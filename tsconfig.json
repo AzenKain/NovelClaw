@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./frontend/src/*"],
+      "@bindings/*": ["./frontend/bindings/*"],
+      "@locales/*": ["./frontend/src/locales/*"]
+    }
+  },
+  "include": [
+    "frontend/src/**/*",
+    "frontend/bindings/**/*"
+  ]
+}

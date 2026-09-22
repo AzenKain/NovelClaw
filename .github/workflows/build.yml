@@ -1,0 +1,201 @@
+name: Build and Release
+
+on:
+  # Manual trigger from the Actions tab.
+  workflow_dispatch:
+  # Release when a version tag is pushed (v1.0.0, v1.2.3, ...).
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+env:
+  NODE_OPTIONS: "--max-old-space-size=4096"
+
+jobs:
+  build:
+    name: Build ${{ matrix.build.platform }}
+    environment: cicd
+    strategy:
+      fail-fast: false
+      matrix:
+        build:
+          - platform: 'linux/amd64'
+            os: 'ubuntu-latest'
+          - platform: 'windows/amd64'
+            os: 'windows-latest'
+          - platform: 'darwin/universal'
+            os: 'macos-latest'
+
+    runs-on: ${{ matrix.build.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install Linux dependencies
+        if: matrix.build.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config libgtk-4-dev libwebkitgtk-6.0-dev zip
+
+      - name: Install Wails v3
+        env:
+          GOTOOLCHAIN: local
+        run: go install github.com/wailsapp/wails/v3/cmd/wails3@v3.0.0-beta.24
+
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+          cd ..
+
+      # The version has ONE source of truth: the `Version` constant in
+      # pkg/appmeta/version.go (no -ldflags injection). Mirror it into
+      # build/config.yml so the bundle metadata baked into Info.plist / MSIX
+      # matches the version the self-updater compares against, and fail the
+      # build if the pushed tag disagrees with the code.
+      - name: Sync version from pkg/appmeta/version.go
+        shell: bash
+        run: |
+          VERSION=$(sed -n 's/^const Version = "\(.*\)"$/\1/p' pkg/appmeta/version.go)
+          if [ -z "$VERSION" ]; then
+            echo "::error::could not read Version from pkg/appmeta/version.go"
+            exit 1
+          fi
+          echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
+          echo "Building NovelClaw $VERSION (tag ${{ github.ref_name }})"
+          # sed -i.bak (with the explicit backup suffix) is the only form
+          # that behaves identically on GNU sed and BSD sed (macOS).
+          sed -i.bak 's/^  version: ".*"/  version: "'"$VERSION"'"/' build/config.yml
+          rm -f build/config.yml.bak
+          grep -n '^  version:' build/config.yml
+
+          # config.yml alone is not enough: the darwin Taskfile copies the
+          # committed Info.plist verbatim into the .app bundle, so regenerate
+          # the build assets to bake the version in (same as `make sync-version`).
+          wails3 update build-assets -name novelclaw -binaryname novelclaw -config build/config.yml
+
+          grep -q "<string>$VERSION</string>" build/darwin/Info.plist \
+            || { echo "::error::Info.plist did not pick up $VERSION"; exit 1; }
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref_name }}" != "v$VERSION" ]; then
+            echo "::error::tag ${{ github.ref_name }} does not match pkg/appmeta/version.go ($VERSION)"
+            exit 1
+          fi
+
+      - name: Package Linux Application
+        if: matrix.build.os == 'ubuntu-latest'
+        run: |
+          wails3 package GOOS=linux GOARCH=amd64
+          mkdir -p prebuild
+          cp bin/novelclaw                        prebuild/novelclaw-linux-amd64
+          cp bin/novelclaw-x86_64.AppImage        prebuild/novelclaw-linux.AppImage
+          cp bin/novelclaw.deb                    prebuild/novelclaw-linux.deb
+          cp bin/novelclaw.rpm                    prebuild/novelclaw-linux.rpm
+          cp bin/novelclaw.pkg.tar.zst            prebuild/novelclaw-linux.pkg.tar.zst
+
+      - name: Install NSIS (Windows)
+        if: matrix.build.os == 'windows-latest'
+        run: |
+          choco install nsis -y
+          echo "C:\Program Files (x86)\NSIS" >> $env:GITHUB_PATH
+
+      - name: Package Windows Application
+        if: matrix.build.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path prebuild
+
+          # AMD64 — the installer is renamed to contain "-installer.", which
+          # the updater's asset matcher skips, so it always picks the bare exe.
+          wails3 package GOOS=windows GOARCH=amd64
+          Copy-Item bin/novelclaw.exe -Destination prebuild/novelclaw-windows-amd64.exe
+          $inst = Get-ChildItem bin/*installer.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($inst) { Copy-Item $inst.FullName -Destination prebuild/novelclaw-windows-amd64-installer.exe }
+          Remove-Item bin/* -Recurse -Force -ErrorAction SilentlyContinue
+
+          # ARM64
+          wails3 package GOOS=windows GOARCH=arm64
+          Copy-Item bin/novelclaw.exe -Destination prebuild/novelclaw-windows-arm64.exe
+          $inst = Get-ChildItem bin/*installer.exe -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($inst) { Copy-Item $inst.FullName -Destination prebuild/novelclaw-windows-arm64-installer.exe }
+          Remove-Item bin/* -Recurse -Force -ErrorAction SilentlyContinue
+
+      - name: Package macOS Application (x64)
+        if: matrix.build.os == 'macos-latest'
+        run: |
+          wails3 package GOOS=darwin GOARCH=amd64
+          mkdir -p prebuild
+          for i in {1..3}; do
+            hdiutil create -volname "NovelClaw" -srcfolder bin/novelclaw.app \
+              -ov -format UDZO -fs HFS+ prebuild/novelclaw-macos-amd64.dmg && break || sleep 3
+          done
+          (cd bin && zip -q -r ../prebuild/novelclaw-darwin-amd64.zip novelclaw.app)
+          rm -rf bin/novelclaw.app
+
+      - name: Package macOS Application (ARM64)
+        if: matrix.build.os == 'macos-latest'
+        run: |
+          wails3 package GOOS=darwin GOARCH=arm64
+          for i in {1..3}; do
+            hdiutil create -volname "NovelClaw" -srcfolder bin/novelclaw.app \
+              -ov -format UDZO -fs HFS+ prebuild/novelclaw-macos-arm64.dmg && break || sleep 3
+          done
+          (cd bin && zip -q -r ../prebuild/novelclaw-darwin-arm64.zip novelclaw.app)
+          rm -rf bin/novelclaw.app
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: novelclaw-${{ strategy.job-index }}
+          path: prebuild/*
+          if-no-files-found: error
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Generate checksums
+        run: |
+          cd dist
+          ls -la
+          sha256sum * > SHA256SUMS
+          cat SHA256SUMS
+          # Every updatable artifact must be covered.
+          for f in novelclaw-linux-amd64 novelclaw-windows-amd64.exe novelclaw-darwin-amd64.zip novelclaw-darwin-arm64.zip; do
+            grep -q " $f\$" SHA256SUMS || { echo "::error::$f missing from SHA256SUMS"; exit 1; }
+          done
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: NovelClaw ${{ github.ref_name }}
+          body_path: release/RELEASE_NOTES.md
+          draft: false
+          prerelease: false
+          files: dist/*

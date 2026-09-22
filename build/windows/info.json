@@ -1,0 +1,15 @@
+{
+	"fixed": {
+		"file_version": "1.0.0"
+	},
+	"info": {
+		"0000": {
+			"ProductVersion": "1.0.0",
+			"CompanyName": "Firefly Shelter",
+			"FileDescription": "AI Novel Translation Studio",
+			"LegalCopyright": "(c) 2026, Firefly Shelter",
+			"ProductName": "NovelClaw",
+			"Comments": "NovelClaw"
+		}
+	}
+}
